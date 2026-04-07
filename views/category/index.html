@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gow Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container">
+            <a class="navbar-brand active text-light" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="/products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="/categories">Categories</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">List Category</h2>
+            <a href="/categories/add" class="btn btn-primary">
+                + Add Category
+            </a>
+        </div>
+        <hr>
+        <div class="card shadow-sm">
+            <table class="table table-bordered table-hover text-center align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 70%;">Name</th>
+                        <th style="width: 30%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .categories }}
+                    <tr>
+                        <td>{{ .Name }}</td>
+                        <td>
+                            <a href="/categories/edit?id={{ .Id }}" class="btn btn-warning btn-sm text-light">Edit</a>
+                            <a href="/categories/delete?id={{ .Id }}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure to delete this category?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {{ else }}
+                    <tr>
+                        <td colspan="2">
+                            No categories found
+                        </td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>
