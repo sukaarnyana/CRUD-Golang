@@ -41,3 +41,27 @@ func Create(category entities.Category) bool {
 
 	return lastInsertId > 0
 }
+
+func Detail(id int) entities.Category {
+	//debug
+	row := config.DB.QueryRow("SELECT * FROM categories WHERE id = ?", id) //ngembaliin satu data aja guys
+
+	var category entities.Category
+	if err := row.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt); err != nil {
+		panic(err.Error())
+	}
+	return category
+}
+
+func Update(id int, category entities.Category) bool {
+	query, err := config.DB.Exec(`UPDATE categories SET name = ?, updated_at = ? WHERE id = ?`, category.Name, category.UpdatedAt, id)
+	if err != nil {
+		panic(err)
+	}
+
+	result, err := query.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+	return result > 0
+}
