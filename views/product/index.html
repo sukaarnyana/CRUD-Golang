@@ -41,15 +41,20 @@
             <table class="table table-bordered table-hover text-center align-middle mb-0">
                 <thead class="table-dark">
                     <tr>
-                        <th style="width: 70%;">Name</th>
-                        <th style="width: 30%;">Actions</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{ range .products }}
                     <tr>
                         <td>{{ .Name }}</td>
-                        <td>
+                        <td>{{ .Category.Name }}</td>
+                        <td>{{ .Stock }}</td>
+                        <td class="action-grid">
+                            <a href="/product/detail?id={{ .Id }}" class="btn btn-info btn-sm text-light">Detail</a>
                             <a href="/product/edit?id={{ .Id }}" class="btn btn-warning btn-sm text-light">Edit</a>
                             <a href="/product/delete?id={{ .Id }}" class="btn btn-danger btn-sm"
                                 onclick="return confirm('Are you sure to delete this product?')">

@@ -6,7 +6,7 @@ import (
 )
 
 func GetAll() []entities.Product {
-	rows, err := config.DB.Query("SELECT * FROM products")
+	rows, err := config.DB.Query("SELECT p.id, p.name, c.name, p.stock, p.description, p.created_at, p.updated_at FROM products p LEFT JOIN categories c ON p.category_id = c.id")
 	if err != nil {
 		panic(err)
 	}
@@ -19,7 +19,7 @@ func GetAll() []entities.Product {
 		err := rows.Scan(
 			&product.Id,
 			&product.Name,
-			&product.Category.Id,
+			&product.Category.Name,
 			&product.Stock,
 			&product.Description,
 			&product.CreatedAt,
@@ -34,4 +34,20 @@ func GetAll() []entities.Product {
 	println("jumlah", len(products))
 
 	return products
+}
+func Create(product entities.Product) bool {
+	result, err := config.DB.Exec(`
+		INSERT INTO products (name, category_id, stock, description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)
+	`, product.Name, product.Category.Id, product.Stock, product.Description, product.CreatedAt, product.UpdatedAt)
+
+	if err != nil {
+		panic(err)
+	}
+
+	lastInsertId, err := result.LastInsertId()
+	if err != nil {
+		panic(err)
+	}
+
+	return lastInsertId > 0
 }
