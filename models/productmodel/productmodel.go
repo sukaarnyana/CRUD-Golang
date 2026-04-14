@@ -51,3 +51,25 @@ func Create(product entities.Product) bool {
 
 	return lastInsertId > 0
 }
+func Detail(id int) entities.Product {
+	row := config.DB.QueryRow(`
+	SELECT p.id, p.name, c.name, p.stock, p.description, p.created_at, p.updated_at FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = ?
+	`, id)
+
+	var product entities.Product
+	err := row.Scan(
+		&product.Id,
+		&product.Name,
+		&product.Category.Name,
+		&product.Stock,
+		&product.Description,
+		&product.CreatedAt,
+		&product.UpdatedAt,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return product
+}
